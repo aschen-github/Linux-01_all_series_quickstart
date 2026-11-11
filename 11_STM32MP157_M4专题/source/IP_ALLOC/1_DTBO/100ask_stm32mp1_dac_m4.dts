@@ -1,0 +1,41 @@
+
+/*
+ * Device tree overlay for dac
+ */
+
+#include "dt-bindings/gpio/gpio.h"
+#include "dt-bindings/pinctrl/stm32-pinfunc.h"
+
+/dts-v1/;
+/plugin/;
+
+/ {
+     compatible = "100ask,100ask-stm32mp1", "st,stm32mp157";
+    fragment@0 {
+        target = <&pinctrl>;
+        __overlay__ {
+			m4_dac1_pins_mx: m4_dac1_mx-0 {
+				pins {
+					pinmux = <STM32_PINMUX('A', 5, ANALOG)>; /* DAC1_OUT2 */
+				};
+			};
+        };
+    };
+	
+    fragment@1 {
+        target = <&dac>;
+        __overlay__ {
+			status = "disable";
+        };
+    };
+	
+		fragment@2 {
+        target = <&m4_dac>;
+        __overlay__ {
+			pinctrl-names = "default";
+			pinctrl-0 = <&m4_dac1_pins_mx>;
+			status = "okay";
+        };
+    };
+};
+

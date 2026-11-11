@@ -1,0 +1,42 @@
+
+/*
+ * Device tree overlay for fdcan2
+ */
+
+#include "dt-bindings/gpio/gpio.h"
+#include "dt-bindings/pinctrl/stm32-pinfunc.h"
+
+/dts-v1/;
+/plugin/;
+
+/ {
+     compatible = "100ask,100ask-stm32mp1", "st,stm32mp157";
+    fragment@0 {
+        target = <&pinctrl>;
+        __overlay__ {
+			m4_fdcan2_pins_mx: m4_fdcan2_mx-0 {
+				pins {
+					pinmux = <STM32_PINMUX('B', 5, RSVD)>, /* FDCAN2_RX */
+							 <STM32_PINMUX('B', 6, RSVD)>; /* FDCAN2_TX */
+				};
+			};
+		};
+    };
+	
+    fragment@1 {
+        target = <&m_can2>;
+        __overlay__ {
+			status = "disable";
+        };
+    };
+	
+	fragment@2 {
+        target = <&m4_m_can2>;
+        __overlay__ {
+			pinctrl-names = "default";
+			pinctrl-0 = <&m4_fdcan2_pins_mx>;
+			status = "okay";
+        };
+    };
+};
+

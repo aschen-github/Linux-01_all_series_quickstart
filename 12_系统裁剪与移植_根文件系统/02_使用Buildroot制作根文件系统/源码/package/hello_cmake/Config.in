@@ -1,0 +1,4 @@
+config BR2_PACKAGE_HELLO_CMAKE
+	bool "hello_cmake"
+	help
+	  hello_cmake for test.

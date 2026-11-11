@@ -1,0 +1,41 @@
+
+/*
+ * Device tree overlay for tim2
+ */
+
+#include "dt-bindings/gpio/gpio.h"
+#include "dt-bindings/pinctrl/stm32-pinfunc.h"
+
+/dts-v1/;
+/plugin/;
+
+/ {
+     compatible = "100ask,100ask-stm32mp1", "st,stm32mp157";
+    fragment@0 {
+        target = <&pinctrl>;
+        __overlay__ {
+			m4_tim2_pwm_pins_mx: m4_tim2_pwm_mx-0 {
+				pins {
+					pinmux = <STM32_PINMUX('G', 8, RSVD)>; /* TIM2_CH1 */
+				};
+			};
+        };
+    };
+	
+    fragment@1 {
+        target = <&timers2>;
+        __overlay__ {
+			status = "disable";
+        };
+    };
+	
+		fragment@2 {
+        target = <&m4_timers2>;
+        __overlay__ {
+			pinctrl-names = "default";
+			pinctrl-0 = <&m4_tim2_pwm_pins_mx>;
+			status = "okay";
+        };
+    };
+};
+

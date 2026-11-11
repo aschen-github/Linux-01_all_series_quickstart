@@ -1,0 +1,4 @@
+MANIFEST_VERSION = openstlinux-5.4-dunfell-mp1-20-06-24
+KERNEL_DT = ./DeviceTree/I2C_Soft/kernel
+UBOOT_DT = ./DeviceTree/I2C_Soft/u-boot
+TFA_DT = ./DeviceTree/I2C_Soft/tf-a

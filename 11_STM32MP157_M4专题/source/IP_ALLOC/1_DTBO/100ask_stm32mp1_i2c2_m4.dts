@@ -1,0 +1,42 @@
+
+/*
+ * Device tree overlay for i2c2
+ */
+
+#include "dt-bindings/gpio/gpio.h"
+#include "dt-bindings/pinctrl/stm32-pinfunc.h"
+
+/dts-v1/;
+/plugin/;
+
+/ {
+     compatible = "100ask,100ask-stm32mp1", "st,stm32mp157";
+    fragment@0 {
+        target = <&pinctrl>;
+        __overlay__ {
+			m4_i2c2_pins_z_mx: m4_i2c2_mx-0 {
+				pins {
+					pinmux = <STM32_PINMUX('Z', 6, RSVD)>, /* I2C2_SCL */
+							 <STM32_PINMUX('Z', 7, RSVD)>; /* I2C2_SDA */
+				};
+			};
+		};
+    };
+	
+    fragment@1 {
+        target = <&i2c2>;
+        __overlay__ {
+			status = "disable";
+        };
+    };
+	
+	fragment@2 {
+        target = <&m4_i2c2>;
+        __overlay__ {
+			pinctrl-names = "default";
+			pinctrl-0 = <&m4_i2c2_pins_z_mx>;
+			status = "okay";
+        };
+    };
+};
+

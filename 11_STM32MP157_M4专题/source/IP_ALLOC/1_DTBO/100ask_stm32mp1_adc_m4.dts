@@ -1,0 +1,29 @@
+
+/*
+ * Device tree overlay for adc
+ */
+
+#include "dt-bindings/gpio/gpio.h"
+#include "dt-bindings/pinctrl/stm32-pinfunc.h"
+
+/dts-v1/;
+/plugin/;
+
+/ {
+     compatible = "100ask,100ask-stm32mp1", "st,stm32mp157";
+	
+    fragment@1 {
+        target = <&adc>;
+        __overlay__ {
+			status = "disable";
+        };
+    };
+	
+		fragment@2 {
+        target = <&m4_adc>;
+        __overlay__ {
+			status = "okay";
+        };
+    };
+};
+

@@ -1,0 +1,31 @@
+1.编译jimtcl
+unzip jimtcl-master.zip
+cd jimtcl-master/
+ls
+./configure --host=arm-buildroot-linux-gnueabihf --prefix=$PWD/tmp
+make
+make install
+ls tmp/
+
+2.编译libusb
+unzip libusb-1.0.28.zip
+cd libusb-1.0.28/
+./bootstrap.sh
+./configure --host=arm-buildroot-linux-gnueabihf --prefix=$PWD/tmp
+make
+make install
+
+
+3.编译openocd
+命令如下：
+unzip openocd-master.zip
+cd  unzip openocd-master
+./bootstrap
+
+JIMTCL_CFLAGS="-I /home/book/openocd/jimtcl-master/tmp/include"  JIMTCL_LIBS="-L/home/book/openocd/jimtcl-master/tmp/lib  /home/book/openocd/jimtcl-master/tmp/lib/libjim.a"   LIBUSB1_CFLAGS="-I /home/book/openocd/libusb-1.0.28/tmp/include/libusb-1.0/"  LIBUSB1_LIBS="-L/home/book/openocd/libusb-1.0.28/tmp/lib -lusb-1.0" ./configure --host=arm-buildroot-linux-gnueabihf  --enable-stlink --prefix=$PWD/tmp
+
+make  // 会在最后链接时出错, 手工执行下面的链接命令
+
+arm-buildroot-linux-gnueabihf-gcc -Wall -Wstrict-prototypes -Wformat-security -Wshadow -Wextra -Wno-unused-parameter -Wbad-function-cast -Wcast-align -Wredundant-decls -Wpointer-arith -Wundef -Werror -g -O2 -o src/openocd src/main.o  src/.libs/libopenocd.a -L/home/book/openocd/libusb-1.0.28/tmp/lib /home/book/openocd/libusb-1.0.28/tmp/lib/libusb-1.0.so   -lpthread -lm -L/home/book/openocd/jimtcl-master/tmp/lib /home/book/openocd/jimtcl-master/tmp/lib/libjim.a -lutil -ldl -pthread -Wl,-rpath -Wl,/home/book/openocd/libusb-1.0.28/tmp/lib  -lssl -lz -lcrypto
+
+make install

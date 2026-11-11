@@ -1,0 +1,29 @@
+
+/*
+ * Device tree overlay for tim5
+ */
+
+#include "dt-bindings/gpio/gpio.h"
+#include "dt-bindings/pinctrl/stm32-pinfunc.h"
+
+/dts-v1/;
+/plugin/;
+
+/ {
+     compatible = "100ask,100ask-stm32mp1", "st,stm32mp157";
+	
+    fragment@0 {
+        target = <&timers5>;
+        __overlay__ {
+			status = "disable";
+        };
+    };
+	
+		fragment@1 {
+        target = <&m4_timers5>;
+        __overlay__ {
+			status = "okay";
+        };
+    };
+};
+

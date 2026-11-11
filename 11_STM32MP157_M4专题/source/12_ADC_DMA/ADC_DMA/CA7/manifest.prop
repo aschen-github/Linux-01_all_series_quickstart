@@ -1,0 +1,4 @@
+MANIFEST_VERSION = openstlinux-5.4-dunfell-mp1-20-06-24
+KERNEL_DT = ./DeviceTree/ADC_DMA/kernel
+UBOOT_DT = ./DeviceTree/ADC_DMA/u-boot
+TFA_DT = ./DeviceTree/ADC_DMA/tf-a

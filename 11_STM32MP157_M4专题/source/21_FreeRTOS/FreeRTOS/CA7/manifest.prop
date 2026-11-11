@@ -1,0 +1,4 @@
+MANIFEST_VERSION = openstlinux-5.4-dunfell-mp1-20-06-24
+KERNEL_DT = ./DeviceTree/FreeRTOS/kernel
+UBOOT_DT = ./DeviceTree/FreeRTOS/u-boot
+TFA_DT = ./DeviceTree/FreeRTOS/tf-a

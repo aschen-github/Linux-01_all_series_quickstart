@@ -1,0 +1,44 @@
+
+/*
+ * Device tree overlay for spi5
+ */
+
+#include "dt-bindings/gpio/gpio.h"
+#include "dt-bindings/pinctrl/stm32-pinfunc.h"
+
+/dts-v1/;
+/plugin/;
+
+/ {
+     compatible = "100ask,100ask-stm32mp1", "st,stm32mp157";
+    fragment@0 {
+        target = <&pinctrl>;
+        __overlay__ {
+			m4_spi5_pins_mx: m4_spi5_mx-0 {
+				pins {
+					pinmux = <STM32_PINMUX('F', 11, RSVD)>, /* SPI5_MOSI */
+							 <STM32_PINMUX('H', 5, RSVD)>, /* SPI5_NSS */
+							 <STM32_PINMUX('H', 6, RSVD)>, /* SPI5_SCK */
+							 <STM32_PINMUX('H', 7, RSVD)>; /* SPI5_MISO */
+				};
+			};
+		};
+    };
+	
+    fragment@1 {
+        target = <&spi5>;
+        __overlay__ {
+			status = "disable";
+        };
+    };
+	
+	fragment@2 {
+        target = <&m4_spi5>;
+        __overlay__ {
+			pinctrl-names = "default";
+			pinctrl-0 = <&m4_spi5_pins_mx>;
+			status = "okay";
+        };
+    };
+};
+

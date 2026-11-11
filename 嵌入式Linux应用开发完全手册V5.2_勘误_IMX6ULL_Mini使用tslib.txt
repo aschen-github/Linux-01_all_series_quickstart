@@ -1,0 +1,40 @@
+# 1. 对于IMX6ULL，配置工具链, 在Ubuntu执行如下命令:
+export ARCH=arm
+export CROSS_COMPILE=arm-buildroot-linux-gnueabihf-
+export PATH=$PATH:/home/book/100ask_imx6ull_mini-sdk/ToolChain/arm-buildroot-linux-gnueabihf_sdk-buildroot/bin
+
+# 2. 交叉编译tslib, 在Ubuntu执行如下命令:
+tar xJf tslib-1.21.tar.xz
+cd tslib-1.21
+./configure  --host=arm-buildroot-linux-gnueabihf  --prefix=/
+make
+make install DESTDIR=$PWD/tmp
+
+# 3. 复制头文件、库文件到工具链里面, 在Ubuntu执行如下命令:
+cd tmp/
+cp include/* /home/book/100ask_imx6ull_mini-sdk/ToolChain/arm-buildroot-linux-gnueabihf_sdk-buildroot/bin/../lib/gcc/arm-buildroot-linux-gnueabihf/7.5.0/include
+cp -d lib/*so*  /home/book/100ask_imx6ull_mini-sdk/ToolChain/arm-buildroot-linux-gnueabihf_sdk-buildroot/bin/../lib/gcc/arm-buildroot-linux-gnueabihf/7.5.0/../../../../arm-buildroot-linux-gnueabihf/lib
+
+# 4. 把库文件放到单板上, 在开发板执行如下命令:
+#    在开发板上使用NFS挂载Ubuntu的目录，
+#    再把前面编译出来的tslib-1.21/tmp/部分文件复制到板子上，示例命令如下：
+cp  /mnt/tslib-1.21/tmp/lib/ts  -rfd     /lib
+cp  /mnt/tslib-1.21/tmp/lib/*so*  -d     /lib
+cp  /mnt/tslib-1.21/tmp/bin/*            /bin
+cp  /mnt/tslib-1.21/tmp/etc/ts.conf  -d  /etc
+
+# 5. 关闭GUI, 在开发板执行如下命令:
+#    对于IMX6ULL，首先需要关闭默认的qt gui程序，
+#    才可以执行ts_test_mt测试命令，关闭qt命令如下所示：
+mv  /etc/init.d/*hmi*  /root
+mv  /etc/init.d/*lvgl*  /root
+reboot
+
+# 6. 运行程序, 在开发板执行如下命令:
+#    在单板上执行测试程序：
+export TSLIB_PLUGINDIR=/lib/ts
+export TSLIB_CONSOLEDEVICE=none
+ts_test_mt
+
+
+

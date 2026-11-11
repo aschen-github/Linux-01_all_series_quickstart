@@ -1,0 +1,9 @@
+tar xzf libmodbus-3.1.10.tar.gz 
+cd libmodbus-3.1.10/
+./configure --host=arm-buildroot-linux-gnueabihf --prefix=$PWD/tmp
+make
+make install
+cd tmp/
+ls
+
+arm-buildroot-linux-gnueabihf-gcc -I libmodbus-3.1.10/tmp/include/modbus -Llibmodbus-3.1.10/tmp/lib -lmodbus  -o sensor_test sensor_test.c

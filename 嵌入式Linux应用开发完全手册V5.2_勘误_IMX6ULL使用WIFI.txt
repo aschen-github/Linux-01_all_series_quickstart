@@ -1,0 +1,33 @@
+# 以下命令都是在开发板执行, 不是在Ubuntu执行
+
+# 1. 禁止系统自动启动wpa_supplicant, 
+#    否则后面执行"iw wlan0 link"时会提示"command failed: No such file or directory"   
+mv  /etc/init.d/S45network-manager   /root
+reboot
+
+# 2. 启动WIFI网卡
+ifconfig wlan0 up
+
+# 3. 查找SSID
+iw dev wlan0 scan | grep SSID
+
+# 4. 设置WIFI SSID和密码
+# ssid_name     改为你的WIFI SSID
+# your_password 改为你的WIFI密码
+wpa_passphrase ssid_name your_password >> /etc/wpa_supplicant.conf
+
+# 5. 连接WIFI
+wpa_supplicant -B -iwlan0 -c /etc/wpa_supplicant.conf
+等待出现: wlan0: link becomes ready
+
+# 6. 查看连接状态
+iw wlan0 link
+
+# 7. 动态获取IP
+udhcpc -i wlan0
+
+# 8. 测试
+ping news.qq.com
+
+# 成功后，以后再次启动系统后，只需要执行第5、第7条命令即可连接WIFI
+
